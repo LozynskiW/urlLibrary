@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +23,7 @@ public class CategoryEntity {
     private String name;
     private String description;
     private String photoUrl;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private Set<UrlEntity> url;
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,4 +26,7 @@ public class UrlEntity {
     private String additionalInfo;
     private String description;
     private LocalDateTime expiryDate;
+
+    @ManyToOne
+    private CategoryEntity category;
 }

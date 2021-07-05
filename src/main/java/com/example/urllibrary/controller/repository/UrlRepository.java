@@ -3,13 +3,14 @@ package com.example.urllibrary.controller.repository;
 import com.example.urllibrary.model.entity.UrlEntity;
 import com.example.urllibrary.model.pojo.Url;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public interface UrlRepository extends JpaRepository<UrlEntity, Long> {
 
-    List<Url> findByCategory(String category);
+    Set<UrlEntity> findAllByCategory_NameEquals(String category);
 
-    List<Url> findByPrefix(String prefix);
+    Set<UrlEntity> findAllByLinkContains(String prefix);
 }
