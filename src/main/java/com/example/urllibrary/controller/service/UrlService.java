@@ -112,8 +112,4 @@ public class UrlService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<Url> mapModelListToSet(List<Url> urlList) {
-        return new HashSet<>(urlList);
-    }
-
 }

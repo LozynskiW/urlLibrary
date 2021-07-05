@@ -1,5 +1,6 @@
 package com.example.urllibrary.model.pojo;
 
+import com.example.urllibrary.validation.RequiredNumberOfPools;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
@@ -15,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@RequiredNumberOfPools
 public class Url {
 
     private Long id;
