@@ -1,6 +1,8 @@
 package com.example.urllibrary.controller.controller;
 
+import com.example.urllibrary.controller.service.CategoryService;
 import com.example.urllibrary.controller.service.UrlService;
+import com.example.urllibrary.model.pojo.Category;
 import com.example.urllibrary.model.pojo.Url;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -18,6 +21,7 @@ import java.util.Set;
 public class UrlController {
 
     private final UrlService urlService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public List<Url> getAll() {
@@ -47,15 +51,35 @@ public class UrlController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping
-    public void updateUrl(@Valid @RequestBody Url url, BindingResult bindingResult) {
+    @PostMapping("/{id}/addCategory/{categoryName}")
+    public void bindUrlToCategory (@PathVariable Long id, @PathVariable String categoryName) {
 
-        urlService.updateUrl(url);
+        Url url;
+        Category category;
+        Optional<Category> maybeCategory;
+        try {
+            url = urlService.getUrlById(id);
+            maybeCategory = categoryService.getAllCategories().stream().filter(c -> c.getName().equals(categoryName))
+                    .findFirst();
+            if (maybeCategory.isPresent()) {
+                category = maybeCategory.get();
+                urlService.bindUrlToCategoryByCategoryName(url, category);
+            }
+
+        } catch (NoSuchFieldException ex) {
+            System.out.println(("No url or category"));
+        }
     }
 
-    @DeleteMapping
+    @PutMapping("/{id}")
+    public void updateUrl(@PathVariable Long id, @Valid @RequestBody Url url) {
+
+        urlService.updateUrl(id, url);
+    }
+
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUrl(@RequestParam Long id) {
+    public void deleteUrl(@PathVariable Long id) {
         urlService.deleteUrlById(id);
     }
 

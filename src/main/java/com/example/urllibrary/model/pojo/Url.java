@@ -8,8 +8,6 @@ import org.hibernate.validator.constraints.URL;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @RequiredNumberOfPools
+@ToString
 public class Url {
 
     private Long id;

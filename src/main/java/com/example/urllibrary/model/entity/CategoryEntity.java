@@ -1,9 +1,6 @@
 package com.example.urllibrary.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "categories")
+@ToString
 public class CategoryEntity {
 
     @Id
@@ -24,6 +22,6 @@ public class CategoryEntity {
     private String description;
     private String photoUrl;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<UrlEntity> url;
 }

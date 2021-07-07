@@ -1,6 +1,7 @@
 package com.example.urllibrary.controller.repository;
 
 import com.example.urllibrary.model.entity.UrlEntity;
+import com.example.urllibrary.model.pojo.Category;
 import com.example.urllibrary.model.pojo.Url;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

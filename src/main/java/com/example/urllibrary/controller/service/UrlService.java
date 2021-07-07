@@ -1,7 +1,10 @@
 package com.example.urllibrary.controller.service;
 
+import com.example.urllibrary.controller.repository.CategoryRepository;
 import com.example.urllibrary.controller.repository.UrlRepository;
+import com.example.urllibrary.model.entity.CategoryEntity;
 import com.example.urllibrary.model.entity.UrlEntity;
+import com.example.urllibrary.model.pojo.Category;
 import com.example.urllibrary.model.pojo.Url;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,30 +46,35 @@ public class UrlService {
         return mapEntityToModel(urlEntityList);
     }
 
-    public void updateUrl(Url url) {
+    public void bindUrlToCategoryByCategoryName(Url url, Category category) {
 
-        if (urlRepository.existsById(url.getId())){
+        url.setCategory(category);
 
-            UrlEntity urlEntity = UrlEntity.builder()
-                    .id(url.getId())
-                    .name(url.getName())
-                    .description(url.getDescription())
-                    .additionalInfo(url.getAdditionalInfo())
-                    .link(url.getLink())
-                    .expiryDate(url.getExpiryDate())
-                    .build();
-            urlRepository.deleteById(url.getId());
+        this.updateUrl(url.getId(), url);
+
+    }
+
+    public void updateUrl(Long id, Url url) {
+
+        if (urlRepository.existsById(id)){
+
+            url.setId(id+10);
+            UrlEntity urlEntity = toEntity(url);
+
             urlRepository.save(urlEntity);
+
+        } else {
+            throw new NoSuchElementException("No such url was found in db");
         }
-        throw new NoSuchElementException("No such url was found in db");
     }
 
     public void deleteUrlById(Long id) {
 
         if (urlRepository.existsById(id)) {
             urlRepository.deleteById(id);
+        } else {
+            throw new NoSuchElementException("No such url was found in db");
         }
-        throw new NoSuchElementException("No such url was found in db");
     }
 
     public void createUrl(Url url) {
@@ -110,6 +118,37 @@ public class UrlService {
                         .expiryDate(ue.getExpiryDate())
                         .build())
                 .collect(Collectors.toSet());
+    }
+
+    private UrlEntity toEntity(Url url) {
+
+        if (url.getCategory() != null) {
+
+            CategoryEntity categoryEntity = CategoryEntity.builder()
+                    .id(url.getCategory().getId())
+                    .name(url.getCategory().getName())
+                    .description(url.getCategory().getDescription())
+                    .photoUrl(url.getCategory().getPhotoUrl())
+                    .build();
+
+            return UrlEntity.builder()
+                    .id(url.getId())
+                    .name(url.getName())
+                    .description(url.getDescription())
+                    .additionalInfo(url.getAdditionalInfo())
+                    .link(url.getLink())
+                    .category(categoryEntity)
+                    .expiryDate(url.getExpiryDate())
+                    .build();
+        }
+        return UrlEntity.builder()
+                .id(url.getId())
+                .name(url.getName())
+                .description(url.getDescription())
+                .additionalInfo(url.getAdditionalInfo())
+                .link(url.getLink())
+                .expiryDate(url.getExpiryDate())
+                .build();
     }
 
 }

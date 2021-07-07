@@ -46,9 +46,9 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping
-    public void updateCategory(@RequestBody Category category) {
-        this.categoryService.updateCategory(category);
+    @PutMapping("/{id}")
+    public void updateCategory(@PathVariable Long id, @Valid @RequestBody Category category) {
+        this.categoryService.updateCategory(id, category);
     }
 
     @DeleteMapping(path = "/{id}")

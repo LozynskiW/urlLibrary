@@ -22,6 +22,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public List<Category> getAllCategories() {
+
         List<CategoryEntity> categoryEntityList = this.categoryRepository.findAll();
 
         return mapEntityToModel(categoryEntityList);
@@ -39,29 +40,30 @@ public class CategoryService {
 
     }
 
-    public void updateCategory(Category category) {
+    public void updateCategory(Long id, Category category) {
 
-        if (categoryRepository.existsById(category.getId())){
+        if (categoryRepository.existsById(id)){
 
             CategoryEntity categoryEntity = CategoryEntity.builder()
-                    .id(category.getId())
+                    .id(id)
                     .name(category.getName())
                     .description(category.getDescription())
                     .photoUrl(category.getPhotoUrl())
                     .build();
 
-            categoryRepository.deleteById(category.getId());
             categoryRepository.save(categoryEntity);
+        } else {
+            throw new NoSuchElementException("No such url was found in db");
         }
-        throw new NoSuchElementException("No such url was found in db");
     }
 
     public void deleteCategoryById(Long id) {
 
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
+        } else {
+            throw new NoSuchElementException("No such url was found in db");
         }
-        throw new NoSuchElementException("No such url was found in db");
     }
 
     public void createCategory(Category category) {

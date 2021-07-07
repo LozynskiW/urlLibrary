@@ -1,9 +1,6 @@
 package com.example.urllibrary.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "urls")
+@ToString
 public class UrlEntity {
 
     @Id
@@ -27,6 +25,6 @@ public class UrlEntity {
     private String description;
     private LocalDateTime expiryDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private CategoryEntity category;
 }
